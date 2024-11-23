@@ -16,7 +16,7 @@
         </a>
 
         <!-- Table to display SUC details -->
-        <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered" id="listOfHEIs">
             <thead>
                 <tr>
                     <th scope="col" width="10rem">#Id</th>
@@ -72,7 +72,7 @@
 
     <script>
         $(document).ready(function (){
-            $('#listOfBooks').dataTable();
+            $('#listOfHEIs').dataTable();
         });
     </script>
 @endpush
