@@ -3,4 +3,4 @@ A CRUD-based laravel application with Map-based views
 
 
 -------
-Check the Master Folder to view/clone.
+Check the Master Branch to view/clone.
