@@ -24,12 +24,12 @@ class CollegeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string','min:2'],
-            'address' => ['required', 'string', 'min:2'],
-            'latitude' => ['required', 'numeric'],
-            'longitude' => ['required', 'numeric'],
+            'name' => ['required', 'string', 'min:2', 'max:255'],
+            'address' => ['required', 'string', 'min:2', 'max:500'],
+            'latitude' => ['required', 'numeric', 'between:12,15.5'],
+            'longitude' => ['required', 'numeric', 'between:120,124.5'],
             'website' => ['nullable', 'string'],
-            'contact_number' => ['nullable', 'string'],
+            'contact_number' => ['nullable', 'string', 'regex:/^\+?[0-9\s\-]{7,15}$/'],
             'avatar' => ['nullable', 'file', 'mimes:png,jpeg,jpg,gif,bmp']
         ];
     }
