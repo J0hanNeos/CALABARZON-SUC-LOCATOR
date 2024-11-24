@@ -48,8 +48,14 @@
                     <tr>
                         <th scope="row">{{ $suc->id }}</th>
                         <td>
-                            <img src="{{ asset("storage/images/{$suc->avatar_url}") }}" alt="Logo"
-                                 style="display: block; margin: auto; width:50px; height:50px; border-radius:50%">
+                            <img src="{{
+                                asset("storage/images/{$suc['avatar_url']}") }}"
+                                alt="{{ $suc['avatar_url'] }}"
+                                style="display: block;
+                                    margin: auto;
+                                    width:50px;
+                                    height:50px;
+                                    border-radius:50%">
                         </td>
                         <td>{{ $suc->name }}</td>
                         <td>{{ $suc->address }}</td>
