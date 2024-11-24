@@ -70,12 +70,12 @@
             <table class="table table-striped table-bordered" id="listOfHEIs">
                 <thead>
                     <tr>
-                        <th scope="col" width="10rem">#Id</th>
-                        <th scope="col" width="20rem">Logo</th>
+                        <th scope="col" >#Id</th>
+                        <th scope="col" style="width: 125px;">Logo</th>
                         <th scope="col">Name</th>
                         <th scope="col">Address</th>
                         <th scope="col">Contact #</th>
-                        <th scope="col" width="20%">Actions</th>
+                        <th scope="col" width="12%">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,7 +84,7 @@
                         <th scope="row">{{ $suc->id }}</th>
                         <td>
                             <img src="{{ asset("storage/images/{$suc->avatar_url}") }}" alt="Logo"
-                                 style="display: block; margin: auto; width:50px; height:50px; border-radius:50%">
+                                 style="display: block; margin: auto; width:65px; height:65px; border-radius:50%">
                         </td>
                         <td>{{ $suc->name }}</td>
                         <td>{{ $suc->address }}</td>

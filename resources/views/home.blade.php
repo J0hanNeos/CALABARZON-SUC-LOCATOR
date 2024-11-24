@@ -4,6 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
             <!-- Welcome Message and Application Introduction -->
             <div class="text-center mb-4">
                 <h3 class="mb-5">Welcome, {{ Auth::user()->name }}!</h3>
