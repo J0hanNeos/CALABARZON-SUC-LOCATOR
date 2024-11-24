@@ -87,7 +87,7 @@ class CollegeController extends Controller
             //id is automatically generated
             'name' => $request->name,
             'address' => $request->address,
-            'contact' => $request->contact_number,
+            'contact_number' => $request->contact_number,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'website' => $request->website,
