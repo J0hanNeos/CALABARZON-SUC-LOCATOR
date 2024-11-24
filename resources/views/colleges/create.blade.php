@@ -56,7 +56,7 @@
                   <!--Latitude-->
                   <div class="mb-3">
                       <label for="latitude" class="form-label">Latitude</label>
-                      <input type="text" class="form-control" id="latitude" name = "latitude">
+                      <input type="number" class="form-control" id="latitude" name = "latitude" step="any" required>
 
                       @error('latitude')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -66,7 +66,7 @@
                   <!--Longitude-->
                   <div class="mb-3">
                       <label for="longitude" class="form-label">Longitude</label>
-                      <input type="text" class="form-control" id="longitude" name = "longitude">
+                      <input type="number" class="form-control" id="longitude" name = "longitude" step="any" required>
 
                       @error('longitude')
                             <div class="alert alert-danger">{{ $message }}</div>
