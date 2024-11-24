@@ -11,11 +11,14 @@
     <div class="row">
         <h1>List of SUCs</h1>
 
-        <!-- Button to create a new SUC -->
-        <a href="{{ route('sucs.create') }}" class="btn"
-           style="width:20rem; background-color:darkslateblue; border-radius:0; border:2px solid black; color:white; margin-bottom:10px;">
-            Add New SUC
-        </a>
+        <div class="col text-end">
+            <!-- Button to create a new SUC -->
+            <a href="{{ route('sucs.create') }}" class="btn"
+                style="width:20rem; background-color:darkslateblue; border-radius:0; border:2px solid black; color:white; margin-bottom:10px;">
+                Add New SUC
+            </a>
+        </div>
+
 
         <!-- Navigation Tabs -->
         <ul class="nav nav-tabs">
@@ -57,14 +60,34 @@
                                     Edit
                                 </a>
                             </div>
+                                <!-- Delete Button -->
                             <div style="display: inline-block">
-                                <form action="{{ route('sucs.destroy', $suc->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $suc->id }}">
+                                    Delete
+                                </button>
+                            </div>
+
+                            <!-- Delete Modal -->
+                            <div class="modal fade" id="deleteModal-{{ $suc->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $suc->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel-{{ $suc->id }}">Delete SUC?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this SUC: <b>{{ $suc->name }}</b>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <form action="{{ route('sucs.destroy', $suc->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Yes</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
