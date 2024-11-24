@@ -79,7 +79,14 @@
                 </div>
             </div>
         </nav>
+        @if (session('success'))
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+            </div>
+        </div>
 
+        @endif
         <main class="py-4">
             @yield('content')
         </main>
@@ -95,6 +102,25 @@
             }
         });
     </script>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            setTimeout(() => {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                setTimeout(() => {
+                    alert.remove();
+                }, 300); // Matches Bootstrap fade-out duration
+            }, 2500); // Auto-dismiss after 1 second
+        }
+    });
+    </script>
+
+
+
     @stack('scripts')
 </body>
 </html>

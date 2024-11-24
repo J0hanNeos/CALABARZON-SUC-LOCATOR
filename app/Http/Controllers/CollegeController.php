@@ -95,7 +95,8 @@ class CollegeController extends Controller
             //timestamps are automatically generated
         ]);
 
-        return redirect()->back()->withInput();
+        return redirect()->back()->with('success', 'SUC updated successfully!');
+
     }
 
     public function destroy(string $id)

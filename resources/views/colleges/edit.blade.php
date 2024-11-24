@@ -2,11 +2,8 @@
 
 @section('content')
 
-    <div style="padding:10px;">
-
-    </div>
-
     <div class="container">
+
         <div class="row">
             <h1>Edit Existing SUC</h1>
             <form action = "{{ route('colleges.update',[
