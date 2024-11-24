@@ -43,14 +43,17 @@
 @section('content')
 
 <div class="container">
-    <div class="row">
+    <div class="row mb-3">
         <h1>List of SUCs</h1>
 
-        <!-- Button to create a new SUC -->
-        <a href="{{ route('sucs.create') }}" class="btn"
-           style="width:20rem; background-color:darkslateblue; border-radius:0; border:2px solid black; color:white; margin-bottom:10px;">
+        <div class="col text-end">
+            <!-- Button to create a new SUC -->
+            <a href="{{ route('sucs.create') }}" class="btn"
+            style="width:20rem; background-color:darkslateblue; border-radius:0.5em; color:white; margin-bottom:10px;">
             Add New SUC
-        </a>
+            </a>
+        </div>
+
 
         <!-- Navigation Tabs -->
         <ul class="nav nav-tabs">
