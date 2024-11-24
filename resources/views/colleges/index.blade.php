@@ -175,7 +175,7 @@
         const colleges = @json($sucs);
 
         // Initialize Leaflet Map
-        const map = L.map('map').setView([14.5995, 120.9842], 8); // Default center (Manila)
+        const map = L.map('map').setView([14.0556904,121.2528315], 9); // Default center (Manila)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 15,
             attribution: '© OpenStreetMap'
