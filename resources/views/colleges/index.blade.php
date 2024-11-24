@@ -3,6 +3,41 @@
 @section('css')
     <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #sidebar {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #f8f9fa;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+            padding: 20px;
+        }
+
+        #sidebar .close-btn {
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        #map-container {
+            position: relative;
+        }
+
+        #map {
+            height: 60vh;
+            width: calc(100% - 300px);
+        }
+
+        #sidebar-search {
+            margin-bottom: 15px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -75,7 +110,17 @@
 
         <!-- Map View -->
         <div id="mapViewContainer" style="display: none;">
-            <div id="map" style="height: 60vh; width:100%;"></div>
+            <div id="map-container">
+                <div id="map"></div>
+                <div id="sidebar">
+                    <div class="close-btn" id="closeSidebar">&times;</div>
+                    <input type="text" id="sidebar-search" class="form-control" placeholder="Search..." />
+                    <h5 id="sidebar-name"></h5>
+                    <p id="sidebar-address"></p>
+                    <p id="sidebar-contact"></p>
+                    <a href="#" id="sidebar-website" target="_blank">Visit Website</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -95,6 +140,12 @@
         const mapViewTab = document.getElementById('mapViewTab');
         const tableViewContainer = document.getElementById('tableViewContainer');
         const mapViewContainer = document.getElementById('mapViewContainer');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const sidebarName = document.getElementById('sidebar-name');
+        const sidebarAddress = document.getElementById('sidebar-address');
+        const sidebarContact = document.getElementById('sidebar-contact');
+        const sidebarWebsite = document.getElementById('sidebar-website');
 
         tableViewTab.addEventListener('click', function (e) {
             e.preventDefault();
@@ -116,12 +167,33 @@
             }, 200);
         });
 
+        closeSidebar.addEventListener('click', function () {
+            sidebar.style.display = 'none';
+        });
+
+        // Pass SUCs data to JavaScript
+        const colleges = @json($sucs);
 
         // Initialize Leaflet Map
-        const map = L.map('map').setView([14.0299072, 121.6233514], 9); // Centered to Sto. Tomas
+        const map = L.map('map').setView([14.5995, 120.9842], 8); // Default center (Manila)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 15,
             attribution: '© OpenStreetMap'
         }).addTo(map);
+
+        // Add markers for each college
+        colleges.forEach(college => {
+            if (college.latitude && college.longitude) {
+                const marker = L.marker([college.latitude, college.longitude]).addTo(map);
+                marker.on('click', () => {
+                    sidebar.style.display = 'block';
+                    sidebarName.textContent = college.name;
+                    sidebarAddress.textContent = `Address: ${college.address}`;
+                    sidebarContact.textContent = `Contact: ${college.contact_number}`;
+                    sidebarWebsite.href = college.website;
+                    sidebarWebsite.textContent = college.website;
+                });
+            }
+        });
     </script>
 @endpush
