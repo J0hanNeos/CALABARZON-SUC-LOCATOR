@@ -87,7 +87,7 @@ class CollegeController extends Controller
             //id is automatically generated
             'name' => $request->name,
             'address' => $request->address,
-            'contact' => $request->contact_number,
+            'contact_number' => $request->contact_number,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
             'website' => $request->website,
@@ -95,7 +95,8 @@ class CollegeController extends Controller
             //timestamps are automatically generated
         ]);
 
-        return redirect()->back()->withInput();
+        return redirect()->back()->with('success', 'SUC updated successfully!');
+
     }
 
     public function destroy(string $id)

@@ -12,12 +12,12 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
     @yield('css')
 </head>
@@ -34,11 +34,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link {{ request()->is('sucs*') ? 'active' : '' }}" href="{{ route('sucs.index') }}">CRUD View</a>
-                        </li>
-                    </ul>
+
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
@@ -56,8 +52,13 @@
                                 </li>
                             @endif
                         @else
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->is('sucs*') ? 'active' : '' }}" href="{{ route('sucs.index') }}">CRUD View</a>
+                                </li>
+                            </ul>
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
@@ -78,14 +79,21 @@
                 </div>
             </div>
         </nav>
+        @if (session('success'))
+        <div class="col">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+            </div>
+        </div>
 
+        @endif
         <main class="py-4">
             @yield('content')
         </main>
     </div>
 
     <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> --}}
     <script>
         // CSRF Setup for AJAX
         $.ajaxSetup({
@@ -94,6 +102,25 @@
             }
         });
     </script>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            setTimeout(() => {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                setTimeout(() => {
+                    alert.remove();
+                }, 300); // Matches Bootstrap fade-out duration
+            }, 2500); // Auto-dismiss after 1 second
+        }
+    });
+    </script>
+
+
+
     @stack('scripts')
 </body>
 </html>
