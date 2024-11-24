@@ -46,7 +46,7 @@
                   <!--Contact-->
                   <div class="mb-3">
                     <label for="contact" class="form-label">Contact</label>
-                    <input type="text" class="form-control" id="contact" name = "contact_number" required>
+                    <input type="text" class="form-control" id="contact" name = "contact_number">
 
                     @error('contact')
                           <div class="alert alert-danger">{{ $message }}</div>
