@@ -3,6 +3,41 @@
 @section('css')
     <link rel="stylesheet" href="//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        #sidebar {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 100%;
+            background-color: #f8f9fa;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+            padding: 20px;
+        }
+
+        #sidebar .close-btn {
+            font-size: 18px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        #map-container {
+            position: relative;
+        }
+
+        #map {
+            height: 60vh;
+            width: calc(100% - 300px);
+        }
+
+        #sidebar-search {
+            margin-bottom: 15px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -11,14 +46,11 @@
     <div class="row">
         <h1>List of SUCs</h1>
 
-        <div class="col text-end">
-            <!-- Button to create a new SUC -->
-            <a href="{{ route('sucs.create') }}" class="btn"
-                style="width:20rem; background-color:darkslateblue; border-radius:0; border:2px solid black; color:white; margin-bottom:10px;">
-                Add New SUC
-            </a>
-        </div>
-
+        <!-- Button to create a new SUC -->
+        <a href="{{ route('sucs.create') }}" class="btn"
+           style="width:20rem; background-color:darkslateblue; border-radius:0; border:2px solid black; color:white; margin-bottom:10px;">
+            Add New SUC
+        </a>
 
         <!-- Navigation Tabs -->
         <ul class="nav nav-tabs">
@@ -48,14 +80,8 @@
                     <tr>
                         <th scope="row">{{ $suc->id }}</th>
                         <td>
-                            <img src="{{
-                                asset("storage/images/{$suc['avatar_url']}") }}"
-                                alt="{{ $suc['avatar_url'] }}"
-                                style="display: block;
-                                    margin: auto;
-                                    width:50px;
-                                    height:50px;
-                                    border-radius:50%">
+                            <img src="{{ asset("storage/images/{$suc->avatar_url}") }}" alt="Logo"
+                                 style="display: block; margin: auto; width:50px; height:50px; border-radius:50%">
                         </td>
                         <td>{{ $suc->name }}</td>
                         <td>{{ $suc->address }}</td>
@@ -66,34 +92,14 @@
                                     Edit
                                 </a>
                             </div>
-                                <!-- Delete Button -->
                             <div style="display: inline-block">
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-{{ $suc->id }}">
-                                    Delete
-                                </button>
-                            </div>
-
-                            <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteModal-{{ $suc->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $suc->id }}" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel-{{ $suc->id }}">Delete SUC?</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to delete this SUC: <b>{{ $suc->name }}</b>?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                                            <form action="{{ route('sucs.destroy', $suc->id) }}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">Yes</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+                                <form action="{{ route('sucs.destroy', $suc->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>
@@ -104,7 +110,17 @@
 
         <!-- Map View -->
         <div id="mapViewContainer" style="display: none;">
-            <div id="map" style="height: 500px;"></div>
+            <div id="map-container">
+                <div id="map"></div>
+                <div id="sidebar">
+                    <div class="close-btn" id="closeSidebar">&times;</div>
+                    <input type="text" id="sidebar-search" class="form-control" placeholder="Search..." />
+                    <h5 id="sidebar-name"></h5>
+                    <p id="sidebar-address"></p>
+                    <p id="sidebar-contact"></p>
+                    <a href="#" id="sidebar-website" target="_blank">Visit Website</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -124,6 +140,12 @@
         const mapViewTab = document.getElementById('mapViewTab');
         const tableViewContainer = document.getElementById('tableViewContainer');
         const mapViewContainer = document.getElementById('mapViewContainer');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const sidebarName = document.getElementById('sidebar-name');
+        const sidebarAddress = document.getElementById('sidebar-address');
+        const sidebarContact = document.getElementById('sidebar-contact');
+        const sidebarWebsite = document.getElementById('sidebar-website');
 
         tableViewTab.addEventListener('click', function (e) {
             e.preventDefault();
@@ -139,13 +161,39 @@
             mapViewContainer.style.display = 'block';
             mapViewTab.classList.add('active');
             tableViewTab.classList.remove('active');
+
+            setTimeout(() => {
+                map.invalidateSize();
+            }, 200);
         });
 
-        // // Initialize Leaflet Map
-        // const map = L.map('map').setView([14.5995, 120.9842], 6); // Manila coordinates
-        // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        //     maxZoom: 18,
-        //     attribution: '© OpenStreetMap'
-        // }).addTo(map);
+        closeSidebar.addEventListener('click', function () {
+            sidebar.style.display = 'none';
+        });
+
+        // Pass SUCs data to JavaScript
+        const colleges = @json($sucs);
+
+        // Initialize Leaflet Map
+        const map = L.map('map').setView([14.0556904,121.2528315], 9); // Default center (Manila)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // Add markers for each college
+        colleges.forEach(college => {
+            if (college.latitude && college.longitude) {
+                const marker = L.marker([college.latitude, college.longitude]).addTo(map);
+                marker.on('click', () => {
+                    sidebar.style.display = 'block';
+                    sidebarName.textContent = college.name;
+                    sidebarAddress.textContent = `Address: ${college.address}`;
+                    sidebarContact.textContent = `Contact: ${college.contact_number}`;
+                    sidebarWebsite.href = college.website;
+                    sidebarWebsite.textContent = college.website;
+                });
+            }
+        });
     </script>
 @endpush
