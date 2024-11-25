@@ -32,7 +32,7 @@
                 <!--SUC NAME-->
                 <div class="mb-3">
                     <label for="name" class="form-label">SUC Name:</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ $sucs ->name }}">
+                    <input type="text" class="form-control" id="name" name="name" value="{{ $sucs ->name }}" required>
 
                     @error('name')
                           <div class="alert alert-danger">{{ $message }}</div>
@@ -42,7 +42,7 @@
                   <!--Address-->
                   <div class="mb-3">
                       <label for="address" class="form-label">Address</label>
-                      <input type="text" class="form-control" id="address" name = "address" value="{{ $sucs ->address }}">
+                      <input type="text" class="form-control" id="address" name = "address" value="{{ $sucs ->address }}" required>
 
                       @error('address')
                           <div class="alert alert-danger">{{ $message }}</div>
@@ -62,7 +62,7 @@
                   <!--Latitude-->
                   <div class="mb-3">
                       <label for="latitude" class="form-label">Latitude</label>
-                      <input type="text" class="form-control" id="latitude" name = "latitude" value="{{ $sucs ->latitude}}">
+                      <input type="number" class="form-control" id="latitude" name = "latitude"  step="any" value="{{ $sucs ->latitude}}" required>
 
                       @error('latitude')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -72,7 +72,7 @@
                   <!--Longitude-->
                   <div class="mb-3">
                       <label for="longitude" class="form-label">Longitude</label>
-                      <input type="text" class="form-control" id="longitude" name = "longitude" value="{{ $sucs ->longitude}}">
+                      <input type="number" class="form-control" id="longitude" name = "longitude"  step="any" value="{{ $sucs ->longitude}}" required>
 
                       @error('longitude')
                             <div class="alert alert-danger">{{ $message }}</div>
