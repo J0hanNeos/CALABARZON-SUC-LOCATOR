@@ -54,7 +54,7 @@
                     <label for="contact" class="form-label">Contact</label>
                     <input type="text" class="form-control" id="contact" name = "contact_number" value="{{ $sucs ->contact_number}}">
 
-                    @error('contact')
+                    @error('contact_number')
                           <div class="alert alert-danger">{{ $message }}</div>
                       @enderror
                   </div>

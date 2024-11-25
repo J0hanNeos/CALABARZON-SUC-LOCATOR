@@ -111,18 +111,24 @@
                         <td>{{ $suc->contact_number }}</td>
                         <td>
                             <div style="display: inline-block">
-                                <a href="{{ route('sucs.edit', $suc->id) }}" class="btn btn-success">
-                                    Edit
+                                <a href="{{ route('sucs.edit', $suc->id) }}" class="btn bi bi-pencil-fill" style="background-color:rgb(23, 158, 92); color:#f8f9fa;">
                                 </a>
                             </div>
                             <div style="display: inline-block">
                                 <form action="{{ route('sucs.destroy', $suc->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
-                                        Delete
+                                    <button type="submit" class="btn bi bi-trash3-fill" style="background-color:rgb(192, 45, 45); color:#f8f9fa;">
                                     </button>
                                 </form>
+                            </div>
+                            <div style="display: inline-block">
+                                <a href="#"
+                                    class="btn bi-geo-alt-fill view-location-btn"
+                                    style="background-color:#edab26; color:#f8f9fa;"
+                                    data-college-id="{{ $suc->id }}">
+                                    <!-- View Location -->
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -372,6 +378,58 @@
         } else {
             searchResultsContainer.style.display = 'none';
         }
+    });
+
+
+    document.querySelectorAll('.view-location-btn').forEach(button => {
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Get the college ID
+        const collegeId = e.target.dataset.collegeId;
+
+        // Find the corresponding college
+        const college = colleges.find(c => c.id == collegeId);
+        if (!college) return;
+
+        // Switch to Map View tab
+        mapViewTab.click();
+
+        // Update map view
+        const latitude = college.latitude || 14.0556904; // Default latitude
+        const longitude = college.longitude || 121.2528315; // Default longitude
+        map.setView([latitude, longitude], 16);
+
+        // Update sidebar content
+        sidebar.style.display = 'block';
+        sidebarName.textContent = college.name || 'N/A';
+        sidebarAddress.textContent = `Address: ${college.address}`;
+        sidebarContact.textContent = college.contact_number
+            ? `Contact: ${college.contact_number}`
+            : '';
+        if (college.website && college.website.trim() !== '') {
+            sidebarWebsite.href = college.website;
+            sidebarWebsite.textContent = college.website;
+            sidebarWebsite.style.display = 'inline';
+            } else {
+                sidebarWebsite.style.display = 'none';
+            }
+            const logoElement = document.getElementById('sidebar-logo');
+            if (college.avatar_url) {
+                logoElement.src = `{{ asset("storage/images/") }}/${college.avatar_url}`;
+                logoElement.style.display = 'block';
+            } else {
+                logoElement.style.display = 'none';
+            }
+
+            // Update the search bar with the selected college name
+            sidebarSearch.value = college.name || 'N/A';
+            sidebarSearch.dispatchEvent(new Event('input')); // Trigger the search logic
+
+            const searchResultsContainer = document.getElementById('search-results');
+            searchResultsContainer.innerHTML = ''; // Clear search results
+            searchResultsContainer.style.display = 'none'; // Hide the search results div
+        });
     });
 
 

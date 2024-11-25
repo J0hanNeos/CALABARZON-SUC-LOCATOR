@@ -45,10 +45,10 @@
 
                   <!--Contact-->
                   <div class="mb-3">
-                    <label for="contact" class="form-label">Contact</label>
+                    <label for="contact_number" class="form-label">Contact</label>
                     <input type="text" class="form-control" id="contact" name = "contact_number">
 
-                    @error('contact')
+                    @error('contact_number')
                           <div class="alert alert-danger">{{ $message }}</div>
                       @enderror
                   </div>

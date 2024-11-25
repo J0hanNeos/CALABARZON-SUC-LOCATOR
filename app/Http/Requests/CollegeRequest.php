@@ -40,6 +40,7 @@ class CollegeRequest extends FormRequest
     {
         return [
             //Add your custom error messages here
+            'contact_number.regex' => 'Invalid Contact Number'
         ];
     }
 }

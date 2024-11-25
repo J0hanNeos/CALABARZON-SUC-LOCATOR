@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CollegeRequest;
 use App\Models\College;
-use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 
 class CollegeController extends Controller
