@@ -44,17 +44,40 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            display: none; /* Initially hidden */
+            display: none;
             margin: 10px auto;
         }
 
         #search-results {
-            max-height: 300px; /* Set a maximum height for the results container */
-            overflow-y: auto; /* Enable vertical scrolling */
-            padding-right: 10px; /* Prevent scrollbar from overlapping content */
+            max-height: 300px;
+            overflow-y: auto;
             position: absolute;
             z-index: 1001;
             background: #f8f9fa;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+
+        .search-bar-container {
+            position: relative;
+        }
+
+        .clear-button {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #ccc;
+            cursor: pointer;
+            display: none;
+        }
+
+        .clear-button:hover {
+            color: #000;
         }
 
     </style>
@@ -69,7 +92,7 @@
         <div class="col text-end">
             <!-- Button to create a new SUC -->
             <a href="{{ route('sucs.create') }}" class="btn"
-            style="width:20rem; background-color:darkslateblue; border-radius:0.5em; color:white; margin-bottom:10px;">
+            style="width:15rem; background-color:#04464d; border-radius:0.5em; color:white; margin-bottom:10px;">
             Add New SUC
             </a>
         </div>
@@ -87,8 +110,8 @@
 
         <!-- Table View -->
         <div class="container mt-3" id="tableViewContainer">
-            <table class="table table-striped table-bordered" id="listOfHEIs">
-                <thead>
+            <table class="table table-striped table-bordered table-hover" id="listOfHEIs">
+                <thead class="table-dark">
                     <tr>
                         <th scope="col" >#Id</th>
                         <th scope="col" style="width: 125px;">Logo</th>
@@ -111,14 +134,22 @@
                         <td>{{ $suc->contact_number }}</td>
                         <td>
                             <div style="display: inline-block">
-                                <a href="{{ route('sucs.edit', $suc->id) }}" class="btn bi bi-pencil-fill" style="background-color:rgb(23, 158, 92); color:#f8f9fa;">
+                                <a href="{{ route('sucs.edit', $suc->id) }}"
+                                    class="btn bi bi-pencil-fill"
+                                    style="background-color:rgb(23, 158, 92); color:#f8f9fa;"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="Edit SUC Details">
                                 </a>
                             </div>
                             <div style="display: inline-block">
                                 <form action="{{ route('sucs.destroy', $suc->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn bi bi-trash3-fill" style="background-color:rgb(192, 45, 45); color:#f8f9fa;">
+                                    <button type="submit"
+                                        class="btn bi bi-trash3-fill"
+                                        style="background-color:rgb(192, 45, 45); color:#f8f9fa;"
+                                        data-toggle="tooltip" data-placement="top"
+                                        title="Delete Record">
                                     </button>
                                 </form>
                             </div>
@@ -126,7 +157,9 @@
                                 <a href="#"
                                     class="btn bi-geo-alt-fill view-location-btn"
                                     style="background-color:#edab26; color:#f8f9fa;"
-                                    data-college-id="{{ $suc->id }}">
+                                    data-college-id="{{ $suc->id }}"
+                                    data-toggle="tooltip" data-placement="top"
+                                    title="View location on Map">
                                     <!-- View Location -->
                                 </a>
                             </div>
@@ -143,7 +176,12 @@
                 <div id="map"></div>
                 <div id="sidebar">
                     <p id="placeholder-message" style="font-weight: bold; color: gray;">Enter the College Name</p>
-                    <input type="text" id="sidebar-search" class="form-control" placeholder="Search..." />
+
+                    <div class="search-bar-container">
+                        <input type="text" id="sidebar-search" class="form-control" placeholder="Search..." />
+                        <button id="clear-search" class="clear-button" style="display: none;">&times;</button>
+                    </div>
+
                     <div id="search-results"></div>
                     <img id="sidebar-logo" class="sidebar-logo" src="" alt="College Logo" >
                     <h5 id="sidebar-name"></h5>
@@ -165,6 +203,8 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
+
+        //show datatables
         $(document).ready(function () {
             $('#listOfHEIs').dataTable();
         });
@@ -180,6 +220,7 @@
         const sidebarContact = document.getElementById('sidebar-contact');
         const sidebarWebsite = document.getElementById('sidebar-website');
         const sidebarSearch = document.getElementById('sidebar-search');
+        const clearSearchButton = document.getElementById('clear-search');
 
         tableViewTab.addEventListener('click', function (e) {
             e.preventDefault();
@@ -286,6 +327,12 @@
     sidebar.style.display = 'block'; // ensures that the sidebar is displayed
     searchResultsContainer.innerHTML = '';
 
+    if (sidebarSearch.value.trim() !== '') {
+        clearSearchButton.style.display = 'block';
+    } else {
+        clearSearchButton.style.display = 'none';
+    }
+
     if (query.trim() === '') {
         // Reset the map view to default
         resetMapView();
@@ -380,7 +427,7 @@
         }
     });
 
-
+    //search results suggestion
     document.querySelectorAll('.view-location-btn').forEach(button => {
     button.addEventListener('click', (e) => {
         e.preventDefault();
@@ -432,10 +479,22 @@
         });
     });
 
+    // clear search and reset
+    clearSearchButton.addEventListener('click', function () {
+        sidebarSearch.value = '';
+        clearSearchButton.style.display = 'none';
+        sidebarSearch.dispatchEvent(new Event('input')); // Trigger input event for search handling
+    });
+
 
     // reset the map to the default view and zoom level
     function resetMapView() {
         map.setView([14.0556904, 121.2528315], 9);
     }
+
+    // fucntion for onhover label, tooltip
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
     </script>
 @endpush
