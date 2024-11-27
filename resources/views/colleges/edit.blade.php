@@ -32,7 +32,7 @@
 
                         <!-- Remove Image button aligned next to the label -->
                         @if($sucs->avatar_url)
-                            <button type="submit" name="remove_avatar" value="1" class="btn btn-danger" style="margin-top: 10px;">
+                            <button type="submit" name="remove_avatar" value="1" class="btn btn-danger" style="margin-top: 10px;" onclick="return confirm('Are you sure you want to remove this image?');">
                                 Remove Image
                             </button>
                         @endif
