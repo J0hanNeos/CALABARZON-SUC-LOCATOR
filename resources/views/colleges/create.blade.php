@@ -17,7 +17,13 @@
             <!-- Avatar -->
             <div class="md-3 mb-3">
                 <label for="avatar" class="form-label">Avatar</label>
-                <input type="file" name="avatar" id="avatar" minlength="2" class="form-control">
+
+                <div style="display: flex; align-items: center;">
+                    <input type="file" name="avatar" id="avatar" minlength="2" class="form-control" style="flex: 1;">
+                    <button type="button" class="btn btn-light btn-sm" id="clear-avatar" style="margin-left: 10px;">
+                        &#x2716; <!-- Unicode X symbol -->
+                    </button>
+                </div>
                 @error('avatar')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
@@ -85,5 +91,10 @@
         </form>
     </div>
 </div>
-
+<script>
+    document.getElementById('clear-avatar').addEventListener('click', function () {
+        const fileInput = document.getElementById('avatar');
+        fileInput.value = ''; // Clear the file input value
+    });
+</script>
 @endsection
