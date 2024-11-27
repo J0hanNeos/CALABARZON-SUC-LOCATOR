@@ -14,17 +14,31 @@
                 @csrf
                 @method('PUT')
 
-                <!--Avatar-->
-                <div class="md-3">
+                <!-- Avatar -->
+                <div class="md-3 mb-3">
                     <div style="margin:10px; text-align:center">
-                        <img
-                                src="{{ asset("storage/images/{$sucs['avatar_url']}") }}"
-                                alt="{{ $sucs['avatar.url'] }}"
+                        @if($sucs->avatar_url)
+                            <img
+                                src="{{ asset('storage/images/'.$sucs->avatar_url) }}"
+                                alt="{{ $sucs->name }} Avatar"
                                 style="width:150px; height:150px; border-radius:50%">
+                        @else
+                            <p>No logo set</p>
+                        @endif
                     </div>
 
-                    <label for="avatar" class="form-label">Avatar</label>
-                    <input type="file" name="avatar" id="avatar">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label for="avatar" class="form-label" style="margin-bottom: 0;">Avatar</label>
+
+                        <!-- Remove Image button aligned next to the label -->
+                        @if($sucs->avatar_url)
+                            <button type="submit" name="remove_avatar" value="1" class="btn btn-danger" style="margin-top: 10px;">
+                                Remove Image
+                            </button>
+                        @endif
+                    </div>
+
+                    <input type="file" name="avatar" id="avatar" class="form-control" style="margin-top: 10px;">
                     @error('avatar')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror

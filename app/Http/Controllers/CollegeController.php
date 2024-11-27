@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CollegeRequest;
 use App\Models\College;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 
 class CollegeController extends Controller
 {
@@ -72,29 +74,37 @@ class CollegeController extends Controller
     public function update(CollegeRequest $request, string $id)
     {
 
-        $sucs = College::query()->find($id);
-        $avatar = $request->file('avatar');
+        $college = College::findOrFail($id);
 
-        if($avatar !== null){
-            $updatedFileName = $this->resolveAvatarUrl($avatar);
-            $avatar->storeAs("public/images", $updatedFileName);
+        // Handle avatar removal
+        if ($request->has('remove_avatar') && $request->remove_avatar == 1) {
+            // Delete the old image from storage
+            if ($college->avatar_url) {
+                Storage::delete('public/images/' . $college->avatar_url);
+            }
+
+            // Update the avatar field to null
+            $college->avatar_url = null;
         }
 
-        $updatedFileName = $avatar !== null ? $updatedFileName : $sucs->avatar_url;
+        // Handle avatar upload if a new file is selected
+        if ($request->hasFile('avatar')) {
+            // Store new image
+            $avatarPath = $request->file('avatar')->store('images', 'public');
+            $college->avatar_url = basename($avatarPath);
+        }
 
-        $sucs->update([
-            //id is automatically generated
-            'name' => $request->name,
-            'address' => $request->address,
-            'contact_number' => $request->contact_number,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'website' => $request->website,
-            'avatar_url'=> $updatedFileName
-            //timestamps are automatically generated
-        ]);
+        // Update other fields
+        $college->name = $request->name;
+        $college->address = $request->address;
+        $college->contact_number = $request->contact_number;
+        $college->latitude = $request->latitude;
+        $college->longitude = $request->longitude;
+        $college->website = $request->website;
 
-        return redirect()->back()->with('success', 'SUC updated successfully!');
+        $college->save();
+
+        return redirect()->back()->with('success', 'College details updated successfully');
 
     }
 
