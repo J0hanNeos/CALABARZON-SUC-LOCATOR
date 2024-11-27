@@ -18,12 +18,23 @@
             <div class="md-3 mb-3">
                 <label for="avatar" class="form-label">Avatar</label>
 
+                <!-- Avatar Preview -->
+                <div style="margin:10px; text-align:center">
+                    <img
+                        id="avatar-preview"
+                        src="{{ asset('storage/images/placeholder-image.jpg') }}"
+                        alt="No logo set"
+                        style="width:150px; height:150px; border-radius:50%">
+                </div>
+
+                <!-- File Input and Clear Button -->
                 <div style="display: flex; align-items: center;">
-                    <input type="file" name="avatar" id="avatar" minlength="2" class="form-control" style="flex: 1;">
+                    <input type="file" name="avatar" id="avatar" class="form-control" style="flex: 1;" accept="image/*">
                     <button type="button" class="btn btn-light btn-sm" id="clear-avatar" style="margin-left: 10px;">
                         &#x2716; <!-- Unicode X symbol -->
                     </button>
                 </div>
+
                 @error('avatar')
                     <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
