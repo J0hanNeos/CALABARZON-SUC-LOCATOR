@@ -9,7 +9,7 @@
     <div class="container">
         <div class="row">
             <h1>Add New SUC</h1>
-            <form action="{{ route('sucs.store') }}"
+            <form action="{{ route('colleges.store') }}"
                 method="POST"
                 enctype="multipart/form-data"
                 style="width:45%">
@@ -86,7 +86,7 @@
 
 
                 <button type="submit" class="btn btn-primary">Save</button>
-                <a href="{{ route('sucs.index') }}" class="btn btn-success">Back</a>
+                <a href="{{ route('colleges.index') }}" class="btn btn-success">Back</a>
               </form>
         </div>
     </div>

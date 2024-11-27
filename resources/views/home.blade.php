@@ -16,7 +16,7 @@
                 <p class="lead mt-3">This application allows you to explore and manage data on State Universities and Colleges (SUCs) in the region. You can view the list of SUCs either as a detailed table or as a map for easier navigation and location viewing.</p>
 
                 <div class="mt-4">
-                    <a href="{{ route('sucs.index') }}" class="btn btn-primary btn-lg">Explore now</a>
+                    <a href="{{ route('colleges.index') }}" class="btn btn-primary btn-lg">Explore now</a>
                 </div>
             </div>
         </div>

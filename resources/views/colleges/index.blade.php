@@ -141,13 +141,39 @@
                                     title="Edit SUC Details">
                                 </a>
                             </div>
+                            <!-- Delete Modal -->
+                            <div class="modal fade" id="deleteModal-{{ $suc->id }}" tabindex="-1" aria-labelledby="deleteModalLabel-{{ $suc->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel-{{ $suc->id }}">Delete SUC?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this SUC: <b>{{ $suc->name }}</b>?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                            <form action="{{ route('colleges.destroy', $suc->id) }}" method="POST" id="deleteForm-{{ $suc->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Yes</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div style="display: inline-block">
                                 <form action="{{ route('colleges.destroy', $suc->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
+                                    <button type="button"
                                         class="btn bi bi-trash3-fill"
                                         style="background-color:rgb(192, 45, 45); color:#f8f9fa;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteModal-{{ $suc->id }}"
                                         data-toggle="tooltip" data-placement="top"
                                         title="Delete Record">
                                     </button>
@@ -169,6 +195,8 @@
                 </tbody>
             </table>
         </div>
+
+
 
         <!-- Map View -->
         <div id="mapViewContainer" style="display: none;">

@@ -58,7 +58,7 @@ class CollegeController extends Controller
         ]);
 
 
-        return redirect('/sucs')->with('success', 'SUC added successfully!');
+        return redirect('/colleges')->with('success', 'SUC added successfully!');
     }
 
     public function edit(string $id)
