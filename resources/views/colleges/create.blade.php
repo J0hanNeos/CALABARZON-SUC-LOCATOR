@@ -11,7 +11,8 @@
             <h1>Add New SUC</h1>
             <form action="{{ route('sucs.store') }}"
                 method="POST"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data"
+                style="width:45%">
 
                 @csrf
                 <div class="md-3">
