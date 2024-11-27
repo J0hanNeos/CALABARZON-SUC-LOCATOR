@@ -19,11 +19,15 @@
                     <div style="margin:10px; text-align:center">
                         @if($sucs->avatar_url)
                             <img
-                                src="{{ asset('storage/images/'.$sucs->avatar_url) }}"
+                                src="{{ asset('storage/images/' . $sucs->avatar_url) }}"
                                 alt="{{ $sucs->name }} Avatar"
                                 style="width:150px; height:150px; border-radius:50%">
                         @else
-                            <p>No logo set</p>
+                            <!-- Placeholder image -->
+                            <img
+                                src="{{ asset('storage/images/placeholder-image.jpg') }}"
+                                alt="No logo set"
+                                style="width:150px; height:150px; border-radius:50%; opacity:0.5;">
                         @endif
                     </div>
 
