@@ -20,7 +20,6 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::resource('sucs', CollegeController::class)->middleware('auth');
 Route::resource('colleges', CollegeController::class)->middleware('auth');
 
 

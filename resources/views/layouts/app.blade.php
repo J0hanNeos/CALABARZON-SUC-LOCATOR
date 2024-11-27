@@ -57,7 +57,7 @@
                         @else
                             <ul class="navbar-nav me-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link {{ request()->is('sucs*') ? 'active' : '' }}" href="{{ route('sucs.index') }}">CRUD View</a>
+                                    <a class="nav-link {{ request()->is('sucs*') ? 'active' : '' }}" href="{{ route('colleges.index') }}">CRUD View</a>
                                 </li>
                             </ul>
                             <li class="nav-item dropdown">

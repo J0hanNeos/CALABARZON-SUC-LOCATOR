@@ -91,7 +91,7 @@
 
         <div class="col text-end">
             <!-- Button to create a new SUC -->
-            <a href="{{ route('sucs.create') }}" class="btn"
+            <a href="{{ route('colleges.create') }}" class="btn"
             style="width:15rem; background-color:#04464d; border-radius:0.5em; color:white; margin-bottom:10px;">
             Add New SUC
             </a>
@@ -134,7 +134,7 @@
                         <td>{{ $suc->contact_number }}</td>
                         <td>
                             <div style="display: inline-block">
-                                <a href="{{ route('sucs.edit', $suc->id) }}"
+                                <a href="{{ route('colleges.edit', $suc->id) }}"
                                     class="btn bi bi-pencil-fill"
                                     style="background-color:rgb(23, 158, 92); color:#f8f9fa;"
                                     data-toggle="tooltip" data-placement="top"
@@ -142,7 +142,7 @@
                                 </a>
                             </div>
                             <div style="display: inline-block">
-                                <form action="{{ route('sucs.destroy', $suc->id) }}" method="POST">
+                                <form action="{{ route('colleges.destroy', $suc->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
