@@ -23,3 +23,8 @@ Ensure you have the following installed on your system:
 ```bash
 git clone https://github.com/--------------
 cd suc-locator
+
+### **2. Install Dependencies**
+- Install PHP dependencies:
+```bash
+composer install
