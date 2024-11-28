@@ -19,9 +19,11 @@ Ensure you have the following installed on your system:
 ## **Setup Instructions**
 
 ### **1. Clone the Repository**
+- Before cloning, ensure you're on the master branch:
 ```bash
+git checkout master
 git clone https://github.com/alchowdhury71/CALABARZON-SUC-LOCATOR.git
-cd suc-locator
+cd CALABARZON-SUC-LOCATOR
 ```
 ### **2. Start Laragon**
 - Launch Laragon and ensure the Apache and MySQL services are running.
@@ -55,13 +57,19 @@ DB_PASSWORD=
 php artisan migrate
 ```
 
-### **6. Build Frontend Assets**
+### **6. Seed the Database**
+- To populate your database with sample data, use the seeder:
+```bash
+php artisan db:seed --class=CollegeSeeder
+```
+
+### **7. Build Frontend Assets**
 - Compile CSS and JavaScript assets:
 ```bash
 npm run dev
 ```
 
-### **7. Start the Development Server**
+### **8. Start the Development Server**
 - Start Laravel's built-in server:
 ```
 php artisan serve
