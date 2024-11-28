@@ -39,8 +39,12 @@ npm install
 ```
 
 ### **4. Environment Setup**
-- Update the following in the `.env` file
-```.env
+- Copy the `.env.example` file to `.env`:
+```bash
+cp .env.example .env
+```
+- Update the `.env` file with the following database configuration:
+```.env  
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
@@ -49,27 +53,32 @@ DB_USERNAME=root
 DB_PASSWORD=
 
 ```
+### **5. Generate Application Key**
+- Run the following command to generate a new application key:
+```bash
+php artisan key:generate
+```
 
-### **5. Database Setup**
+### **6. Database Setup**
 - Create a new database in MySQL using the Laragon database manager or terminal.
 - Run migrations to set up the database schema:
 ```bash
 php artisan migrate
 ```
 
-### **6. Seed the Database**
+### **7. Seed the Database**
 - To populate your database with sample data, use the seeder:
 ```bash
 php artisan db:seed --class=CollegeSeeder
 ```
 
-### **7. Build Frontend Assets**
+### **8. Build Frontend Assets**
 - Compile CSS and JavaScript assets:
 ```bash
 npm run dev
 ```
 
-### **8. Start the Development Server**
+### **9. Start the Development Server**
 - Start Laravel's built-in server:
 ```
 php artisan serve
