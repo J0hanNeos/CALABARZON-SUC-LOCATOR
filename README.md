@@ -20,7 +20,7 @@ Ensure you have the following installed on your system:
 
 ### **1. Clone the Repository**
 ```bash
-git clone https://github.com/--------------
+git clone https://github.com/alchowdhury71/CALABARZON-SUC-LOCATOR.git
 cd suc-locator
 ```
 ### **2. Start Laragon**
